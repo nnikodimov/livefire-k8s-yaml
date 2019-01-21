@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: livefire-demo-ingress
+spec:
+  rules:
+  - host: demo.livefire.corp.local
+    http:
+      paths:
+      - backend:
+          serviceName: livefire-clusterip
+          servicePort: 80

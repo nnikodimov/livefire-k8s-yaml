@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: livefire-type-lb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: web-tier
+  template:
+    metadata:
+      labels:
+        app: livefire-demo
+        version: v1.0
+        tier: web-tier
+    spec:
+      containers:
+      - name: livefire-demo
+        image:  livefire-pod:v4
+        ports:
+        - containerPort: 8080
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: livefire-lb
+  labels:
+    app: livefire-lb
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: livefire-lb
+  selector:
+    tier: web-tier
+  type: LoadBalancer
