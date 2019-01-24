@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: livefire-demo-dly
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: livefire-demo
@@ -18,7 +18,7 @@ spec:
       - name: livefire-demo
         image:  livefire-pod:v3
         ports:
-        - containerPort: 80
+        - containerPort: 443
         env:
         - name: POD_NAME
           valueFrom:

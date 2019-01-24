@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: livefire-demo
-        image:  livefire-pod:v4
+        image:  livefire-pod:v3
         ports:
-        - containerPort: 8080
+        - containerPort: 81
         env:
         - name: POD_NAME
           valueFrom:
@@ -46,7 +46,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 8080
+    targetPort: 81
     protocol: TCP
     name: livefire-lb
   selector:

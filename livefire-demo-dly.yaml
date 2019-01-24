@@ -15,9 +15,10 @@ spec:
     spec:
       containers:
       - name: livefire-demo
-        image:  livefire-pod:v4
+        image:  livefire-pod:v3
         ports:
         - containerPort: 80
+        - containerPort: 443
         env:
         - name: POD_NAME
           valueFrom:
