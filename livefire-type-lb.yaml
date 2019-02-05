@@ -3,20 +3,20 @@ kind: Deployment
 metadata:
   name: livefire-type-lb
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       tier: web-tier
   template:
     metadata:
       labels:
-        app: livefire-demo
+        app: runnsx-demo
         version: v1.0
         tier: web-tier
     spec:
       containers:
-      - name: livefire-demo
-        image:  livefire-pod:v3
+      - name: runnsx-demo
+        image:  runnsx-pod:v2
         ports:
         - containerPort: 81
         env:

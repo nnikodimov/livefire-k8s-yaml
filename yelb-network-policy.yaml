@@ -73,15 +73,3 @@ spec:
     ports:
     - protocol: TCP
       port: 5432
-
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: yelb-deny
-spec:
-  podSelector:
-    matchLabels:
-      appstack: yelb
-  policyTypes:
-  - Ingress
