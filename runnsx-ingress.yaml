@@ -1,15 +1,3 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: runnsx-demo-dly
-spec:
-  selector:
-    app: runnsx-demo
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 81
----
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -20,5 +8,5 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: runnsx-demo-dly
+          serviceName: livefire-lb
           servicePort: 80

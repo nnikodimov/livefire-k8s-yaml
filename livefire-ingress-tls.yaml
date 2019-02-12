@@ -6,7 +6,7 @@ spec:
   tls:
   - hosts:
     - demotls.livefire.corp.local
-    secretName: default-tls
+    secretName: livefire-tls
   rules:
   - host: demotls.livefire.corp.local
     http:
