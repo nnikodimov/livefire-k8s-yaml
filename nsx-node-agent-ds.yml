@@ -1,7 +1,6 @@
 # yaml template for nsx-node-agent and nsx-kube-proxy DaemonSet
 # Right kubernetes API parameters and NCP Docker image must be
 # specified.
-# This yaml file is part of NCP 2.4.1 release.
 
 # ConfigMap for ncp.ini
 apiVersion: v1
@@ -49,7 +48,7 @@ data:
     # distinguish multiple clusters who are using the same NSX.
     # This is also used as the tag of IP blocks for cluster to allocate
     # IP addresses. Different clusters should have different IP blocks.
-    cluster = tenant1-k8s-cluster
+    cluster = k8s-cluster
 
     # Log level for the NCP operations. If set, overrides the level specified
     # for the root logger. Possible values are NOTSET, DEBUG, INFO, WARNING,
@@ -68,12 +67,6 @@ data:
     # The type of container node. Possible values are HOSTVM, BAREMETAL.
     node_type = HOSTVM
 
-    # The time in seconds for NCP/nsx_node_agent to recover the connection to
-    # NSX manager/container orchestrator adaptor/Hyperbus before exiting.
-    # If the value is 0, NCP/nsx_node_agent won't exit automatically when
-    # the connection check fails
-    #connect_retry_timeout = 0
-
     [ha]
     #
     # NCP High Availability configuration options
@@ -81,22 +74,21 @@ data:
 
     # Time duration in seconds of mastership timeout. NCP instance will
     # remain master for this duration after elected. Note that the heartbeat
-    # period plus the update timeout must not be greater than this period. This
+    # period plus the update timeout must be less than this period. This
     # is done to ensure that the master instance will either confirm
     # liveness or fail before the timeout.
-    #master_timeout = 18
+    #master_timeout = 9
 
     # Time in seconds between heartbeats for elected leader. Once an NCP
     # instance is elected master, it will periodically confirm liveness based
     # on this value.
-    #heartbeat_period = 6
+    #heartbeat_period = 3
 
-    # Timeout duration in seconds for update to election resource. The default
-    # value is calculated by subtracting heartbeat period from master timeout.
-    # If the update request does not complete before the timeout it will be
+    # Timeout duration in seconds for update to election resource. If the
+    # update request does not complete before the timeout it will be
     # aborted. Used for master heartbeats to ensure that the update finishes
     # or is aborted before the master timeout occurs.
-    #update_timeout = <None>
+    #update_timeout = 3
 
     [k8s]
     #
@@ -203,7 +195,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - timeout 5 check_pod_liveness nsx-node-agent
+                - check_pod_liveness nsx-node-agent
             initialDelaySeconds: 5
             timeoutSeconds: 5
             periodSeconds: 10
@@ -245,7 +237,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - timeout 5 check_pod_liveness nsx-kube-proxy
+                - check_pod_liveness nsx-kube-proxy
             initialDelaySeconds: 5
             periodSeconds: 5
           securityContext:
